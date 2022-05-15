@@ -4,6 +4,8 @@ var fileType = require('file-type')
 var htmlCommentRegex = require('html-comment-regex')
 var parallel = require('run-parallel')
 
+const archiver = require('archiver');
+
 function staticValue (value) {
   return function (req, file, cb) {
     cb(null, value)
@@ -186,6 +188,25 @@ S3Storage.prototype._handleFile = function (req, file, cb) {
 
     var currentSize = 0
 
+
+    let isZip = false;
+
+    if (file.mimetype === 'application/zip') {
+      isZip = true;
+    }
+
+    let archive = null;
+    const pass = new stream.PassThrough();
+
+    if (!isZip) {
+      archive = archiver('zip', {
+        zlib: { level: 9 },
+      });
+      archive.append(opts.replacementStream || file.stream, { name: file.originalname || file.name });
+      archive.pipe(pass);
+      archive.finalize();
+    }
+
     var params = {
       Bucket: opts.bucket,
       Key: opts.key,
@@ -196,7 +217,7 @@ S3Storage.prototype._handleFile = function (req, file, cb) {
       StorageClass: opts.storageClass,
       ServerSideEncryption: opts.serverSideEncryption,
       SSEKMSKeyId: opts.sseKmsKeyId,
-      Body: (opts.replacementStream || file.stream)
+      Body: !isZip ? pass : (opts.replacementStream || file.stream)
     }
 
     if (opts.contentDisposition) {

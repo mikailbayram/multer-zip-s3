@@ -1,6 +1,6 @@
 {
-  "name": "multer-s3",
-  "version": "2.10.0",
+  "name": "multer-zip-s3",
+  "version": "1.0.3",
   "description": "Streaming multer storage engine for AWS S3",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/badunk/multer-s3.git"
+    "url": "git+https://github.com/mikailbayram/multer-zip-s3"
   },
   "keywords": [
     "multer",
@@ -19,10 +19,11 @@
   "author": "badunk",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/badunk/multer-s3/issues"
+    "url": "https://github.com/mikailbayram/multer-zip-s3/issues"
   },
-  "homepage": "https://github.com/badunk/multer-s3#readme",
+  "homepage": "https://github.com/mikailbayram/multer-zip-s3#readme",
   "dependencies": {
+    "archiver": "^5.3.1",
     "file-type": "^3.3.0",
     "html-comment-regex": "^1.1.2",
     "run-parallel": "^1.1.6"
